@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -33,6 +34,20 @@ const userSchema = new mongoose.Schema({
 });
 
 
-const UserCOllection = mongoose.model("User", userSchema);
+// middleware to hash the password before saving the user
+userSchema.pre('save', async function (next) {
+    console.log('hello from the middleware');
+    // we should return next if the password is not modified, because use may save any data and not just the password
+    if (this.isModified('password') === false) return next();
+
+    // to hash the password we should use the bcrypt library
+    this.password = await bcrypt.hash(this.password, 12);
+
+    // we should delete the confirmPassword after hashing the password
+    this.confirmPassword = undefined;
+    next();
+})
+
+const UserCOllection = mongoose.model("users", userSchema);
 
 module.exports = UserCOllection;
