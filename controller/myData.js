@@ -10,3 +10,14 @@ exports.me = catchAsync(async (request, response, next) => {
         }
     })
 })
+
+exports.userData = catchAsync(async (request, response, next) => {
+    const id = request.params.id;
+    const user = await userDb.findById(id);
+    if (!user) return next(new AppError('User not found', 404));
+    response.status(200).json({
+        status: 'success', message: 'User data', data: {
+            user
+        }
+    })
+})

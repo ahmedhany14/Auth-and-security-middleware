@@ -21,12 +21,13 @@ sign up Notes:
 */
 
 exports.sign_up = catchAsync(async (request, response, next) => {
-    const { name, email, password, confirmPassword } = request.body;
+    const {name, email, password, confirmPassword, role} = request.body;
     const user = await userDB.create({
         name,
         email,
         password,
         confirmPassword,
+        role
     });
 
     await GeneratorNewToken(user, 201, response);
