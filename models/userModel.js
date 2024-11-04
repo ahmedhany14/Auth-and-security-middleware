@@ -52,7 +52,12 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.authenticate_password = async function (requestPassword, actualPassword) {
     return await bcrypt.compare(requestPassword, actualPassword);
 }
+userSchema.methods.compareTimeIfChanged = function (JWTTime){
+    if(this.passwordChangedAt === undefined) return false;
 
+    // if this condition is true, then the password was changed after the token was created
+    return JWTTime < this.passwordChangedAt.getTime();
+}
 
 const UserCOllection = mongoose.model("users", userSchema);
 
