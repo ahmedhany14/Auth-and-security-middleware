@@ -18,7 +18,7 @@ const connectDB = async () => {
 
 const app = require("./app");
 
-app.listen(3000, () => {
+app.listen(5000, () => {
   connectDB();
   console.log(`Server is running on http://localhost:${path}`);
 });

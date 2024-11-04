@@ -48,6 +48,12 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
+// schema method to compare the passwords
+userSchema.methods.authenticate_password = async function (requestPassword, actualPassword) {
+    return await bcrypt.compare(requestPassword, actualPassword);
+}
+
+
 const UserCOllection = mongoose.model("users", userSchema);
 
 module.exports = UserCOllection;
