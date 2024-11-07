@@ -5,12 +5,10 @@ const AppError = require('../utils/appError');
 /*
 Reset password middleware notes and steps:
 
-3) when the user clicks on the link, we will verify the token and the email address.
-    - check if the token is valid and not expired.
-    - check if the password and confirm password are the same.
-    - save the new password in the database.
-
-4) create new token in the cookie
+1) at the first you should receive the password and the confirmPassword from the request body ✅
+2) then you should check if the password and the confirmPassword have a value or not ✅
+3) save the new password hashed in the database ✅
+4) send a response to the client side with a message to login again ✅
 
 */
 
@@ -30,6 +28,5 @@ exports.reset = catchAsync(async (request, response, next) => {
     response.status(200).json({
         status: 'success',
         message: 'reset password please login again',
-        user: request.user
     })
 });
