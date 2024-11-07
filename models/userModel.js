@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require('bcryptjs')
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -22,6 +23,11 @@ const userSchema = new mongoose.Schema({
         type: Date, default: undefined
     }, role: {
         type: String, enum: ['user', 'admin', 'super-admin'], required: [true, 'Role is required'],
+    },
+    passwordResetToken: {
+        type: String
+    }, passwordResetExpires: {
+        type: Date
     }
 });
 
@@ -49,6 +55,15 @@ userSchema.methods.compareTimeIfChanged = function (JWTTime) {
 
     // if this condition is true, then the password was changed after the token was created
     return JWTTime < parseInt(this.passwordChangedAt.getTime() / 1000);
+}
+userSchema.methods.createPasswordResetToken = function () {
+    const originalToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(originalToken).digest('hex');
+
+    this.passwordResetToken = hashedToken;
+    this.passwordResetExpires = Date.now() + 1 * 60 * 1000; // expires in 1 minutes
+
+    return originalToken;
 }
 
 const UserCOllection = mongoose.model("users", userSchema);
