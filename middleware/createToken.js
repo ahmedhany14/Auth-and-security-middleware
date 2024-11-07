@@ -20,6 +20,15 @@ Step to custom temporary token:
 
 */
 
+const deleteToken = async (user) => {
+    console.log('delete token');
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({
+        validateBeforeSave: false
+    });
+}
+
 exports.customTemporaryToken = catchAsync(async (request, response, next) => {
     const {email} = request.body;
     const user = await User.findOne({email: email});
@@ -27,6 +36,8 @@ exports.customTemporaryToken = catchAsync(async (request, response, next) => {
     if (!user) return next(new AppError('User not found please sign up', 404));
 
     const token = await user.createPasswordResetToken();
+
+    setInterval(deleteToken, 1000 * 60, user);
 
     await user.save({
         validateBeforeSave: false
