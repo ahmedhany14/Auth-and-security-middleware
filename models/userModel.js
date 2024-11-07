@@ -63,6 +63,8 @@ userSchema.methods.createPasswordResetToken = function () {
     this.passwordResetToken = hashedToken;
     this.passwordResetExpires = Date.now() + 1 * 60 * 1000; // expires in 1 minutes
 
+    console.log(this)
+
     return originalToken;
 }
 

@@ -22,11 +22,15 @@ Step to custom temporary token:
 
 exports.customTemporaryToken = catchAsync(async (request, response, next) => {
     const {email} = request.body;
-    const user = await User.findOne({email : email});
+    const user = await User.findOne({email: email});
 
     if (!user) return next(new AppError('User not found please sign up', 404));
 
     const token = await user.createPasswordResetToken();
+
+    await user.save({
+        validateBeforeSave: false
+    });
 
     request.token = token;
     return next();

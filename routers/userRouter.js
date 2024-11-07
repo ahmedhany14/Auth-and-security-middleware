@@ -6,6 +6,7 @@ const {reset} = require('./../controller/reset_password')
 const {protect} = require('./../middleware/protect')
 const {customTemporaryToken} = require('../middleware/createToken')
 const {linkToResetPassword} = require('./../controller/resetEmail')
+const {resetPassWithToken} = require('./../controller/resetWithToken')
 const {PreventAccess} = require('./../middleware/permission')
 const {me, userData} = require('./../controller/myData')
 
@@ -25,6 +26,9 @@ router.route('/reset_password')
 
 router.route('/forget_password')
     .post(customTemporaryToken, linkToResetPassword);
+
+router.route('/reset_password/:token')
+    .post(resetPassWithToken);
 
 
 router.route('/:id')

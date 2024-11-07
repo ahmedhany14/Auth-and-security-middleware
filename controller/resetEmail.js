@@ -13,8 +13,9 @@ const User = require('../models/userModel');
 
 exports.linkToResetPassword = catchAsync(async (request, response, next) => {
 
-    const message = `Please click on the link to reset the password http://localhost:3000/reset_password/${request.token}`;
+    const message = `Please click on the link to reset the password 127.0.0.1:5000/authApi/reset_password/${request.token}`;
 
+    request.token = undefined; // 3shan msh ay ebn a7ba y hack el token
     response.status(200).json({
         status: 'success',
         message: message,
