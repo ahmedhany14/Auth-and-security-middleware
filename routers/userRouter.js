@@ -2,6 +2,7 @@ const express = require('express');
 
 const {sign_up} = require('./../controller/sign_up')
 const {log_in} = require('./../controller/log_in')
+const {reset} = require('./../controller/reset_password')
 const {protect} = require('./../middleware/protect')
 const {PreventAccess} = require('./../middleware/permission')
 const {me, userData} = require('./../controller/myData')
@@ -16,6 +17,9 @@ router.route('/log_in')
 
 router.route('/me')
     .get(protect, me);
+
+router.route('/reset_password')
+    .post(protect, reset);
 
 router.route('/:id')
     .get(protect, PreventAccess('super-admin'), userData);

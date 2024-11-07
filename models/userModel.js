@@ -48,7 +48,7 @@ userSchema.methods.compareTimeIfChanged = function (JWTTime) {
     if (this.passwordChangedAt === undefined) return false;
 
     // if this condition is true, then the password was changed after the token was created
-    return JWTTime < this.passwordChangedAt.getTime();
+    return JWTTime < parseInt(this.passwordChangedAt.getTime() / 1000);
 }
 
 const UserCOllection = mongoose.model("users", userSchema);
