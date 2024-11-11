@@ -29,11 +29,12 @@ protecting middleware notes and steps:
  */
 
 exports.protect = catchAsync(async (request, response, next) => {
-    if(!request.headers.cookie) return next(new AppError('You are not logged in', 401));
-    // 1) get the token from the request and check if there is no token or not in the cookie
-    const token = request.headers.cookie.split('=')[1];
+    console.log(request.headers);
 
-    if (!token || request.headers.cookie === undefined) return next(new AppError('You are not logged in', 401));
+    // 1) get the token from the request and check if there is no token or not in the cookie
+    const token = request.headers.authorization.split(' ')[1];
+
+    if (!token) return next(new AppError('You are not logged in', 401));
 
     // 2) check if the token is valid, more formally verify the token and construct the payload
 

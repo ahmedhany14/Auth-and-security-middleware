@@ -3,8 +3,7 @@ const dotenv = require("dotenv");
 
 
 
-dotenv.config({ path: "./config.env" });
-const path = process.env.PORT;
+dotenv.config({ path: "./Config.env" });
 
 const connectDB = async () => {
   const database = process.env.DATABASE;
@@ -18,7 +17,8 @@ const connectDB = async () => {
 
 const app = require("./app");
 
-app.listen(5000, () => {
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
   connectDB();
-  console.log(`Server is running on http://localhost:${path}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

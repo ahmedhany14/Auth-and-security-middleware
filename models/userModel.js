@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
         required: [true, "Email is required"],
         unique: true,
         validate: [validator.isEmail, "Please provide a valid email"]
-    }, password: {
+    },
+    password: {
         type: String, required: [true, "Password is required"]
     }, confirmPassword: {
         type: String, required: [true, "Confirm Password is required"], validate: {
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema({
     }, passwordChangedAt: {
         type: Date, default: undefined
     }, role: {
-        type: String, enum: ['user', 'admin', 'super-admin'], required: [true, 'Role is required'],
+        type: String, enum: ['user', 'admin', 'super-admin'], default: 'user'
     },
     passwordResetToken: {
         type: String
